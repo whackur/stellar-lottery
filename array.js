@@ -1,8 +1,9 @@
 const pool = [
   'Alice',
   'Bob',
+  'Caesar',
   'Sam',
-  'Evelyn'
+  'Evelyn',
 ]
 
 module.exports = {

@@ -14,7 +14,7 @@ checkEnv([
 const server = new StellarSdk.Server(process.env.NETWORK, {allowHttp: true});
 
 async function lottery (argv) {
-  console.log('argv => ', argv);
+  // console.log('argv => ', argv);
   const keypair = StellarSdk.Keypair.fromSecret(process.env.XLM_SECRET);
   const fromAddress = keypair.publicKey();
   const loadedAccount = await server.loadAccount(fromAddress);
@@ -38,6 +38,19 @@ async function lottery (argv) {
     .build();
   transaction.sign(keypair);
   const resp = await server.submitTransaction(transaction);
+  const hash = resp.hash; // ex) 7db401fdbe64a1c8ef1904cd7fdc97395ab2274c23141c1e9b653ee28f5b380
+    let randNum = 0;
+  for (const letter of hash) {
+      randNum += Math.pow(letter.charCodeAt(0), 2) - 1
+      // randNum += letter.charCodeAt(0)
+  }
+  randNum = parseInt(randNum.toString().split('').reverse().join(''), 10);
+  randNum = Math.floor(randNum / 10)
+  console.log(`Random Number: ${randNum}`);
+  const rem = randNum % pool.length;
+  console.log('rem => ', rem);
+  randNum -= rem;
+
   console.log(resp._links.self.href);
 }
 
