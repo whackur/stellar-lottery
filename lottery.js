@@ -3,7 +3,7 @@ require('dotenv').config();
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const argv = yargs(hideBin(process.argv)).argv
-const {pool} = require('./array');
+// const {pool} = require('./array');
 const checkEnv = require('check-env');
 
 checkEnv([
@@ -47,10 +47,8 @@ async function lottery (argv) {
   randNum = parseInt(randNum.toString().split('').reverse().join(''), 10);
   randNum = Math.floor(randNum / 10)
   console.log(`Random Number: ${randNum}`);
-  const rem = randNum % pool.length;
-  console.log('rem => ', rem);
-  randNum -= rem;
-
+  const rem = randNum % argv.p;
+  console.log(`WIN: ${rem}`);
   console.log(resp._links.self.href);
 }
 
