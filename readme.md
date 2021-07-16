@@ -18,6 +18,7 @@ Set XLM_SECRET, NETWORK
 
 -p: pool number
 
+## Example
 ```shell
 node lottery.js -t GBVZZO7AHBK3E2TUCYEZ4UJJZVXODMRFLFYZNBDW4ZMTZFV4FUJUVFHE -m MEMO --amount 0.000001 -p 20
 ```
