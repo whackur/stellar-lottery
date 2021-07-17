@@ -20,7 +20,7 @@ async function lottery (argv) {
   const loadedAccount = await server.loadAccount(fromAddress);
   const txOptions = {
     fee: StellarSdk.BASE_FEE,
-    networkPassphrase: StellarSdk.Networks.TESTNET,
+    networkPassphrase: process.env.NETWORK==='https://horizon.stellar.org' ? StellarSdk.Networks.PUBLIC : StellarSdk.Networks.TESTNET,
   };
   const transaction = new StellarSdk.TransactionBuilder(
     loadedAccount,
@@ -33,11 +33,11 @@ async function lottery (argv) {
         amount: argv.amount.toString(),
       }),
     )
-    .addMemo(argv.memo ? StellarSdk.Memo.text(argv.memo) : StellarSdk.Memo.none())
+    .addMemo(argv.m ? StellarSdk.Memo.text(argv.m) : StellarSdk.Memo.none())
     .setTimeout(180)
     .build();
   transaction.sign(keypair);
-  const resp = await server.submitTransaction(transaction);
+  const resp = await server.submitTransaction(transaction).catch((e) => console.log('error: ', e.response?.data?.extras?.result_codes?.transaction));
   const hash = resp.hash; // ex) 7db401fdbe64a1c8ef1904cd7fdc97395ab2274c23141c1e9b653ee28f5b380
     let randNum = 0;
   for (const letter of hash) {
